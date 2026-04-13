@@ -1,16 +1,31 @@
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
+import { useEffect, useState } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim"; 
 
 function ParticlesBg() {
-  const particlesInit = async (main) => {
-    // This loads the tsparticles package bundle, it's the easiest way for getting all features
-    await loadFull(main);
+  const [init, setInit] = useState(false);
+
+  // This should only run once
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      // You can also use loadFull(engine) for all features, 
+      // but loadSlim is lighter and more than enough for these particles.
+      await loadSlim(engine);
+    }).then(() => {
+      setInit(true);
+    });
+  }, []);
+
+  const particlesLoaded = (container) => {
+    // console.log("Particles loaded:", container);
   };
+
+  if (!init) return null;
 
   return (
     <Particles
       id="tsparticles"
-      init={particlesInit}
+      particlesLoaded={particlesLoaded}
       className="absolute inset-0 z-0"
       options={{
         fullScreen: false,
