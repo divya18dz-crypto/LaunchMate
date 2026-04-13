@@ -1,8 +1,16 @@
 import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
 
 function ParticlesBg() {
+  const particlesInit = async (main) => {
+    // This loads the tsparticles package bundle, it's the easiest way for getting all features
+    await loadFull(main);
+  };
+
   return (
     <Particles
+      id="tsparticles"
+      init={particlesInit}
       className="absolute inset-0 z-0"
       options={{
         fullScreen: false,
@@ -90,4 +98,4 @@ function ParticlesBg() {
   );
 }
 
-export default ParticlesBg;
+export default ParticlesBg;
