@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+* {
+  cursor: none !important;
+}
+
+@keyframes fade-float-in {
+  0% {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-float {
+  animation: fade-float-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 🌌 DASHBOARD ANIMATED BACKGROUND */
+.dashboard-bg-container {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: #05050a;
+  overflow: hidden;
+}
+
+/* Noise Texture for Depth */
+.dashboard-bg-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/* Subtle Mesh Grid */
+.dashboard-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at center, black, transparent 90%);
+  opacity: 0.4;
+}
+
+/* Aurora / Glowing Orbs */
+.dashboard-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  animation: swirl 30s infinite alternate ease-in-out, pulse 12s infinite alternate ease-in-out;
+}
+
+.orb-1 {
+  width: 800px;
+  height: 800px;
+  top: -20%;
+  left: -20%;
+  background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
+}
+
+.orb-2 {
+  width: 700px;
+  height: 700px;
+  bottom: -15%;
+  right: -15%;
+  background: radial-gradient(circle, #4f46e5 0%, transparent 70%);
+  animation-delay: -7s;
+}
+
+.orb-3 {
+  width: 600px;
+  height: 600px;
+  top: 30%;
+  right: -10%;
+  background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+  opacity: 0.2;
+  animation-duration: 40s;
+}
+
+.orb-4 {
+  width: 500px;
+  height: 500px;
+  bottom: 20%;
+  left: 10%;
+  background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  opacity: 0.25;
+  animation-delay: -12s;
+}
+
+.orb-5 {
+  width: 450px;
+  height: 450px;
+  top: 10%;
+  left: 40%;
+  background: radial-gradient(circle, #d946ef 0%, transparent 70%);
+  opacity: 0.15;
+  animation-duration: 25s;
+}
+
+@keyframes swirl {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  33% { transform: translate(10%, 15%) rotate(120deg) scale(1.1); }
+  66% { transform: translate(-10%, 10%) rotate(240deg) scale(0.9); }
+  100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.25; filter: blur(100px); }
+  50% { opacity: 0.45; filter: blur(80px); }
+  100% { opacity: 0.25; filter: blur(100px); }
+}
+
+/* 🧪 GLASSMORPHISM ENHANCEMENT */
+.glass-card {
+  background: rgba(13, 0, 26, 0.4) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1px solid rgba(168, 85, 247, 0.2) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8) !important;
+}
