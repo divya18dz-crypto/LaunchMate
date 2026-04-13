@@ -1,4 +1,6 @@
-import { loadFull } from "tsparticles"; 
+import { useEffect, useState } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 
 function ParticlesBg() {
   const [init, setInit] = useState(false);
@@ -6,8 +8,8 @@ function ParticlesBg() {
   // This should only run once
   useEffect(() => {
     initParticlesEngine(async (engine) => {
-      // Use loadFull for the complete feature set (triangles, complex links, etc.)
-      await loadFull(engine);
+      // loadSlim is faster and more reliable for production builds
+      await loadSlim(engine);
     }).then(() => {
       setInit(true);
     });
@@ -24,6 +26,12 @@ function ParticlesBg() {
       id="tsparticles"
       particlesLoaded={particlesLoaded}
       className="absolute inset-0 z-0"
+      // Explicit style ensures the canvas has dimensions in production
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+      }}
       options={{
         fullScreen: false,
         background: {
@@ -44,7 +52,7 @@ function ParticlesBg() {
           },
           modes: {
             repulse: {
-              distance: 100,
+              distance: 70,
               duration: 0.4,
             },
             push: {
@@ -116,4 +124,4 @@ function ParticlesBg() {
   );
 }
 
-export default ParticlesBg;
+export default ParticlesBg;
