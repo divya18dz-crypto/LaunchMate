@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim"; 
+import { loadFull } from "tsparticles"; 
 
 function ParticlesBg() {
   const [init, setInit] = useState(false);
@@ -8,9 +6,8 @@ function ParticlesBg() {
   // This should only run once
   useEffect(() => {
     initParticlesEngine(async (engine) => {
-      // You can also use loadFull(engine) for all features, 
-      // but loadSlim is lighter and more than enough for these particles.
-      await loadSlim(engine);
+      // Use loadFull for the complete feature set (triangles, complex links, etc.)
+      await loadFull(engine);
     }).then(() => {
       setInit(true);
     });
@@ -57,17 +54,17 @@ function ParticlesBg() {
         },
         particles: {
           color: {
-            value: ["#ffffff", "#a855f7", "#c084fc", "#9333ea"],
+            value: ["#ffffff", "#a855f7", "#ec4899", "#22d3ee"],
           },
           links: {
             color: "#c084fc",
             distance: 150,
             enable: true,
-            opacity: 0.2,
-            width: 1,
+            opacity: 0.4,
+            width: 1.5,
             triangles: {
               enable: true,
-              opacity: 0.05,
+              opacity: 0.1,
             },
           },
           move: {
@@ -77,7 +74,7 @@ function ParticlesBg() {
               default: "bounce",
             },
             random: false,
-            speed: 0.5,
+            speed: 1.2,
             straight: false,
           },
           number: {
@@ -85,10 +82,10 @@ function ParticlesBg() {
               enable: true,
               area: 800,
             },
-            value: 80,
+            value: 100,
           },
           opacity: {
-            value: { min: 0.1, max: 0.7 },
+            value: { min: 0.3, max: 0.9 },
             animation: {
               enable: true,
               speed: 1,
@@ -99,12 +96,18 @@ function ParticlesBg() {
             type: "circle",
           },
           size: {
-            value: { min: 1, max: 3 },
+            value: { min: 2, max: 4 },
             animation: {
               enable: true,
               speed: 2,
               sync: false,
             },
+          },
+          // ✨ Added Glowing Neon Effect
+          shadow: {
+            enable: true,
+            blur: 10,
+            color: "#ffffff",
           },
         },
         detectRetina: true,
