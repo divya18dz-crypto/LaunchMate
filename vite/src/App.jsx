@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 import Home from "./Home";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
@@ -14,6 +16,16 @@ function App() {
   const [page, setPage] = useState("home");
   const [activeIdea, setActiveIdea] = useState(null); // Stores Gemini analysis
   const [toast, setToast] = useState(null);
+  const [engineReady, setEngineReady] = useState(false);
+
+  // Global Particle Engine Initialization
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      setEngineReady(true);
+    });
+  }, []);
 
   // Global Toast Trigger
   const showToast = (message, type = "error") => {
@@ -38,7 +50,9 @@ function App() {
   else if (page === "product") CurrentPage = <Product setPage={setPage} />;
   else if (page === "features") CurrentPage = <Features setPage={setPage} />;
   else if (page === "history") CurrentPage = <History setPage={setPage} setActiveIdea={setActiveIdea} showToast={showToast} />;
-  else CurrentPage = <div>Dashboard coming...</div>;
+  else CurrentPage = <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
+
+  if (!engineReady) return <div className="min-h-screen bg-[#0d001a] flex items-center justify-center text-purple-400">Loading Experience...</div>;
 
   return (
     <div className="cursor-none">

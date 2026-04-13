@@ -1,37 +1,15 @@
-import { useEffect, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
+import Particles from "@tsparticles/react";
 
 function ParticlesBg() {
-  const [init, setInit] = useState(false);
-
-  // This should only run once
-  useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      // loadSlim is faster and more reliable for production builds
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
-    });
-  }, []);
-
   const particlesLoaded = (container) => {
     // console.log("Particles loaded:", container);
   };
-
-  if (!init) return null;
 
   return (
     <Particles
       id="tsparticles"
       particlesLoaded={particlesLoaded}
       className="absolute inset-0 z-0"
-      // Explicit style ensures the canvas has dimensions in production
-      style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-      }}
       options={{
         fullScreen: false,
         background: {
