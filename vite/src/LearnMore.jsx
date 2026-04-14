@@ -1,11 +1,6 @@
-import ParticlesBg from "./ParticlesBg";
-
 function LearnMore({ setPage }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#000000] via-[#0d001a] to-[#200040] text-white px-6 py-10 relative overflow-hidden">
-
-      {/* PARTICLES BACKGROUND */}
-      <ParticlesBg />
+    <div className="min-h-screen bg-transparent text-white px-6 py-10 relative overflow-hidden">
 
       {/* CONTENT WRAPPER */}
       <div className="relative z-10 max-w-4xl mx-auto">

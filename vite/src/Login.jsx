@@ -1,6 +1,3 @@
-import { useState, useEffect } from "react";
-import ParticlesBg from "./ParticlesBg";
-
 function Login({ setPage }) {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -113,11 +110,7 @@ function Login({ setPage }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center 
-    bg-gradient-to-br from-[#0d001a] via-black to-[#200040] relative overflow-hidden">
-
-      {/* PARTICLES BACKGROUND */}
-      <ParticlesBg />
+    <div className="min-h-screen flex items-center justify-center bg-transparent relative overflow-hidden">
 
       {/* Glass Card */}
       <div className="backdrop-blur-md bg-purple-900/10 

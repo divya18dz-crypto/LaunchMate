@@ -46,8 +46,7 @@ function Input({ setPage, setActiveIdea }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center 
-    bg-gradient-to-br from-[#0d001a] via-black to-[#200040]">
+    <div className="min-h-screen flex items-center justify-center bg-transparent">
 
       {/* Glass Card */}
       <div className="backdrop-blur-md bg-purple-900/10 

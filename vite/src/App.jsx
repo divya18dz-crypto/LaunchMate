@@ -9,6 +9,7 @@ import Product from "./Product";
 import Features from "./Features";
 import History from "./History";
 import Toast from "./components/Toast";
+import ParticlesBg from "./ParticlesBg";
 
 function App() {
   const [page, setPage] = useState("home");
@@ -41,8 +42,9 @@ function App() {
   else CurrentPage = <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
 
   return (
-    <div className="cursor-none">
+    <div className="cursor-none min-h-screen bg-[#0d001a]">
       <CustomCursor />
+      <ParticlesBg />
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
       {CurrentPage}
     </div>

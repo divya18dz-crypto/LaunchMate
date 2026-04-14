@@ -1,11 +1,6 @@
-import ParticlesBg from "./ParticlesBg";
-
 function Product({ setPage }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0d001a] via-black to-[#200040] relative overflow-hidden">
-      
-      {/* PARTICLES BACKGROUND */}
-      <ParticlesBg />
+    <div className="min-h-screen bg-transparent relative overflow-hidden">
 
       {/* NAVBAR */}
       <header className="relative z-10 border-b border-purple-500/20 bg-black/40 backdrop-blur-md">
