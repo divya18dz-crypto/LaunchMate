@@ -1,4 +1,6 @@
-function Login({ setPage }) {
+import { useState, useEffect } from "react";
+
+function Login({ setPage, showToast }) {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
@@ -17,7 +19,7 @@ function Login({ setPage }) {
     // If we have a token, we are already logged in
     const token = localStorage.getItem("launchmate_token");
     if (token) {
-      setPage("input");
+      setPage("dashboard");
     }
   }, [setPage]);
 
@@ -100,7 +102,7 @@ function Login({ setPage }) {
         setNewPassword("");
       } else {
         localStorage.setItem("launchmate_token", data.token);
-        setPage("input");
+        setPage("dashboard");
       }
     } catch (err) {
       setApiError("Failed to connect to the server.");

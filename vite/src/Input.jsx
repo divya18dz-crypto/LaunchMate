@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Input({ setPage, setActiveIdea }) {
+function Input({ setPage, setActiveIdea, showToast }) {
   const [idea, setIdea] = useState("");
   const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);

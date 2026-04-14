@@ -21,13 +21,63 @@ function App() {
     setToast({ message, type });
   };
 
+  const fetchLatestIdea = async () => {
+    const token = localStorage.getItem("launchmate_token");
+    if (!token) return null;
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ideas/history`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) return null;
+
+      const ideas = await response.json();
+      if (!Array.isArray(ideas) || ideas.length === 0) return null;
+
+      return [...ideas].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+    } catch {
+      return null;
+    }
+  };
+
   // Session Persistence on Mount
   useEffect(() => {
     const token = localStorage.getItem("launchmate_token");
-    if (token) {
-      setPage("input"); // Skip home/login if already authenticated
-    }
+    if (!token) return;
+
+    const restoreSession = async () => {
+      const latestIdea = await fetchLatestIdea();
+      if (latestIdea) {
+        setActiveIdea(latestIdea);
+        setPage("dashboard");
+        return;
+      }
+
+      // First-time users still need to submit their first idea.
+      setPage("input");
+    };
+
+    restoreSession();
   }, []);
+
+  // If user lands on dashboard without selected idea, restore the latest one.
+  useEffect(() => {
+    if (page !== "dashboard" || activeIdea) return;
+
+    const loadLatestIdea = async () => {
+      const latestIdea = await fetchLatestIdea();
+      if (latestIdea) {
+        setActiveIdea(latestIdea);
+      } else {
+        setPage("input");
+      }
+    };
+
+    loadLatestIdea();
+  }, [page, activeIdea]);
 
   let CurrentPage;
 
@@ -42,9 +92,8 @@ function App() {
   else CurrentPage = <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>;
 
   return (
-    <div className="cursor-none min-h-screen bg-[#0d001a]">
+    <div className="cursor-none min-h-screen bg-black">
       <CustomCursor />
-      <ParticlesBg />
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
       {CurrentPage}
     </div>

@@ -5,32 +5,19 @@ function CustomCursor() {
 
   useEffect(() => {
     const cursor = cursorRef.current;
-
-    let mouseX = 0;
-    let mouseY = 0;
-    let currentX = 0;
-    let currentY = 0;
+    if (!cursor) return;
 
     const moveCursor = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      // Use requestAnimationFrame to sync with the browser's refresh rate
+      // and prevent layout thrashing.
+      requestAnimationFrame(() => {
+        if (cursor) {
+          cursor.style.transform = `translate(${e.clientX - 12}px, ${e.clientY - 12}px)`;
+        }
+      });
     };
 
     window.addEventListener("mousemove", moveCursor);
-
-    const animate = () => {
-      // Smooth follow effect (you can adjust 0.15 for speed)
-      currentX += (mouseX - currentX) * 0.15;
-      currentY += (mouseY - currentY) * 0.15;
-
-      if (cursor) {
-        cursor.style.transform = `translate(${currentX - 12}px, ${currentY - 12}px)`;
-      }
-
-      requestAnimationFrame(animate);
-    };
-
-    animate();
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
@@ -41,12 +28,17 @@ function CustomCursor() {
     <div
       ref={cursorRef}
       className="fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform"
+      style={{
+        transform: "translate(-100px, -100px)" // Start off-screen
+      }}
     >
-      <div className="text-purple-400 text-3xl drop-shadow-[0_0_8px_rgba(168,85,247,0.9)]">
+      {/* STAR */}
+      <div className="text-purple-400 text-3xl 
+drop-shadow-[0_0_8px_rgba(168,85,247,0.9)]">
         ✦
       </div>
     </div>
   );
 }
 
-export default CustomCursor;
+export default CustomCursor;

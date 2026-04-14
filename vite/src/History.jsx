@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function History({ setPage, setActiveIdea }) {
+function History({ setPage, setActiveIdea, showToast }) {
   const [ideas, setIdeas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

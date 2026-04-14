@@ -19,7 +19,7 @@ import pitchImg from "./assets/pitch.jpeg";
 import strategyImg from "./assets/stratergy.jpeg";
 import riskImg from "./assets/risk.jpeg";
 
-function Dashboard({ activeIdea, setPage }) {
+function Dashboard({ activeIdea, setPage, showToast }) {
   const [activePage, setActivePage] = useState("main");
   const reportRef = useRef(null);
 
@@ -151,7 +151,7 @@ function Dashboard({ activeIdea, setPage }) {
   };
 
   return (
-    <div className="min-h-screen text-white p-6 relative z-0">
+    <div className="min-h-screen  bg-gradient-to-br from-[#0d001a] via-black to-[#200040]">
       
       {/* 🌌 DYNAMIC CSS BACKGROUND (Only for Dashboard) */}
       <div className="dashboard-bg-container">
@@ -200,138 +200,158 @@ function Dashboard({ activeIdea, setPage }) {
         </div>
       )}
 
-      {/* HEADER SECTION WITH LOGOUT & EXPORT */}
-      <div className={`flex justify-end gap-3 mb-4 ${activePage !== "main" ? "blur-sm transition duration-300" : "transition duration-300"}`}>
-        <button 
-          onClick={() => setPage("history")} 
-          className="text-sm flex items-center gap-2 px-4 py-2 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white rounded-lg transition duration-300 shadow-[0_0_10px_rgba(128,0,255,0.1)]"
-        >
-          📜 View History
-        </button>
+      {/* MAIN CONTENT WRAPPER */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-8 relative z-10">
+        
+        {/* HEADER SECTION WITH LOGOUT & EXPORT */}
+        <div className={`flex justify-end gap-3 mb-8 ${activePage !== "main" ? "blur-sm transition duration-300" : "transition duration-300"}`}>
+          <button 
+            onClick={() => setPage("input")} 
+            className="text-sm flex items-center gap-2 px-4 py-2 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white rounded-lg transition duration-300 shadow-[0_0_10px_rgba(128,0,255,0.1)]"
+          >
+            ➕ New Idea
+          </button>
 
-        <button 
-          onClick={exportToPDF} 
-          className="text-sm flex items-center gap-2 px-4 py-2 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white rounded-lg transition duration-300 shadow-[0_0_10px_rgba(128,0,255,0.1)]"
-        >
-          📄 Export PDF
-        </button>
+          <button 
+            onClick={() => setPage("history")} 
+            className="text-sm flex items-center gap-2 px-4 py-2 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white rounded-lg transition duration-300 shadow-[0_0_10px_rgba(128,0,255,0.1)]"
+          >
+            📜 View History
+          </button>
 
-        <button 
-          onClick={() => {
-            localStorage.removeItem("launchmate_token");
-            setPage("home");
-          }} 
-          className="text-sm px-4 py-2 border border-red-500/30 text-red-400 hover:bg-red-500/20 hover:text-white rounded-lg transition duration-300 shadow-[0_0_10px_rgba(239,68,68,0.1)]"
-        >
-          Log Out
-        </button>
-      </div>
+          <button 
+            onClick={exportToPDF} 
+            className="text-sm flex items-center gap-2 px-4 py-2 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white rounded-lg transition duration-300 shadow-[0_0_10px_rgba(128,0,255,0.1)]"
+          >
+            📄 Export PDF
+          </button>
 
-      {/* MAIN AI RESULT SECTION */}
-      <div ref={reportRef} className={`mb-10 p-6 rounded-2xl glass-card relative z-10 ${activePage !== "main" ? "blur-sm transition duration-300" : "transition duration-300"}`}>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold text-purple-300 mb-4">
-              Your Startup Analysis 🚀
-            </h1>
+          <button 
+            onClick={() => {
+              localStorage.removeItem("launchmate_token");
+              setPage("home");
+            }} 
+            className="text-sm px-4 py-2 border border-red-500/30 text-red-400 hover:bg-red-500/20 hover:text-white rounded-lg transition duration-300 shadow-[0_0_10px_rgba(239,68,68,0.1)]"
+          >
+            Log Out
+          </button>
+        </div>
 
-            <h2 className="text-xl font-semibold text-white mb-2">
-              {activeIdea ? activeIdea.name : "Idea Name"}
-            </h2>
+        {/* MAIN AI RESULT SECTION */}
+        <div ref={reportRef} className={`mb-12 p-8 rounded-2xl glass-card relative z-10 ${activePage !== "main" ? "blur-sm transition duration-300" : "transition duration-300"}`}>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-purple-300 mb-6">
+                Your Startup Analysis 🚀
+              </h1>
 
-            <p className="text-gray-400 mb-4 italic">
-              "{activeIdea ? activeIdea.summary : "Your idea summary..."}"
-            </p>
+              <h2 className="text-2xl font-semibold text-white mb-3">
+                {activeIdea ? activeIdea.name : "Idea Name"}
+              </h2>
 
-            <div className="text-gray-300 text-sm">
-              <span className="font-bold text-purple-300">💡 AI Executive Summary:</span>
-              <p className="mt-2 text-base">
-                {activeIdea && activeIdea.analysis
-                  ? activeIdea.analysis.generalAnalysis
-                  : "No analysis available. Please submit an idea first!"}
+              <p className="text-gray-400 mb-6 italic text-lg opacity-80">
+                "{activeIdea ? activeIdea.summary : "Your idea summary..."}"
               </p>
-            </div>
-          </div>
 
-          {/* Execution Tracking Circular Progress Bar */}
-          {activeIdea && activeIdea.analysis && (
-            <div className="flex flex-col items-center justify-center p-4 bg-black/40 rounded-xl border border-purple-500/30 shadow-[0_0_15px_rgba(128,0,255,0.2)]">
-              <h3 className="text-sm font-semibold text-purple-300 mb-3">Execution Tracking</h3>
-              <div className="relative w-24 h-24">
-                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                  <circle
-                    className="text-purple-900/30 stroke-current"
-                    strokeWidth="8"
-                    cx="50"
-                    cy="50"
-                    r="40"
-                    fill="transparent"
-                  ></circle>
-                  <circle
-                    className="text-purple-400 stroke-current flex"
-                    strokeWidth="8"
-                    strokeLinecap="round"
-                    cx="50"
-                    cy="50"
-                    r="40"
-                    fill="transparent"
-                    strokeDasharray="251.2"
-                    strokeDashoffset={251.2 - (251.2 * (activeIdea.analysis.score?.feasibility ? activeIdea.analysis.score.feasibility * 10 : 0)) / 100}
-                    style={{ transition: "stroke-dashoffset 1s ease-in-out" }}
-                  ></circle>
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xl font-bold text-white">
-                    {activeIdea.analysis.score?.feasibility ? activeIdea.analysis.score.feasibility * 10 : 0}%
-                  </span>
-                </div>
+              <div className="text-gray-300">
+                <span className="font-bold text-purple-300 text-lg">💡 AI Executive Summary:</span>
+                <p className="mt-3 text-lg leading-relaxed">
+                  {activeIdea && activeIdea.analysis
+                    ? activeIdea.analysis.generalAnalysis
+                    : "No analysis available. Please submit an idea first!"}
+                </p>
               </div>
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* FEATURE CARDS */}
-      <h2 className="text-xl font-semibold text-purple-300 mb-4">
-        Explore Features
-      </h2>
-
-      <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ${activePage !== "main" ? "blur-sm transition duration-300" : "transition duration-300"}`}>
-        {[
-          { title: "Business Plan", page: "business", img: businessImg },
-          { title: "Startup Score", page: "score", img: scoreImg },
-          { title: "Budget", page: "budget", img: budgetImg },
-          { title: "Marketing", page: "marketing", img: marketingImg },
-          { title: "Analytics", page: "analytics", img: analyticsImg },
-          { title: "Pitch", page: "pitch", img: pitchImg },
-          { title: "Strategy", page: "strategy", img: strategyImg },
-          { title: "Risk Detection", page: "risk", img: riskImg }
-        ].map((card, index) => (
-          <div 
-            key={card.title}
-            className="animate-fade-float"
-            style={{ animationDelay: `${index * 150}ms` }}
-          >
-            <div
-              onClick={() => setActivePage(card.page)}
-              className="group cursor-pointer p-5 rounded-xl glass-card hover:-translate-y-1 transition duration-300 h-full"
-            >
-              <img
-                src={card.img}
-                className="h-28 w-full object-cover rounded-lg mb-4 opacity-90 group-hover:opacity-100 transition duration-300"
-              />
-              <h3 className="text-lg font-semibold text-white group-hover:text-purple-300 transition">
-                {card.title}
-              </h3>
-              <p className="text-sm text-gray-400 mt-1">
-                Click to explore {card.title.toLowerCase()}
-              </p>
-            </div>
+            {/* Execution Tracking Circular Progress Bar */}
+            {activeIdea && activeIdea.analysis && (
+              <div className="flex flex-col items-center justify-center p-6 bg-black/40 rounded-2xl border border-purple-500/30 shadow-[0_0_20px_rgba(128,0,255,0.2)]">
+                <h3 className="text-sm font-semibold text-purple-300 mb-4">Execution Tracking</h3>
+                <div className="relative w-32 h-32">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle
+                      className="text-purple-900/30 stroke-current"
+                      strokeWidth="8"
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                    ></circle>
+                    <circle
+                      className="text-purple-400 stroke-current"
+                      strokeWidth="8"
+                      strokeLinecap="round"
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="transparent"
+                      strokeDasharray="251.2"
+                      strokeDashoffset={251.2 - (251.2 * (activeIdea.analysis.score?.feasibility ? activeIdea.analysis.score.feasibility * 10 : 0)) / 100}
+                      style={{ transition: "stroke-dashoffset 1s ease-in-out" }}
+                    ></circle>
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-white">
+                      {activeIdea.analysis.score?.feasibility ? activeIdea.analysis.score.feasibility * 10 : 0}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        ))}
+        </div>
+
+        {/* FEATURE CARDS */}
+        <div className={activePage !== "main" ? "blur-sm transition duration-300" : "transition duration-300"}>
+          <h2 className="text-2xl font-bold text-purple-300 mb-8 flex items-center gap-3">
+            <span className="w-2 h-8 bg-purple-500 rounded-full"></span>
+            Explore Strategy Features
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { title: "Business Plan", page: "business", img: businessImg },
+              { title: "Startup Score", page: "score", img: scoreImg },
+              { title: "Budget", page: "budget", img: budgetImg },
+              { title: "Marketing", page: "marketing", img: marketingImg },
+              { title: "Analytics", page: "analytics", img: analyticsImg },
+              { title: "Pitch", page: "pitch", img: pitchImg },
+              { title: "Strategy", page: "strategy", img: strategyImg },
+              { title: "Risk Detection", page: "risk", img: riskImg }
+            ].map((card, index) => (
+              <div 
+                key={card.title}
+                className="animate-fade-float"
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                <div
+                  onClick={() => setActivePage(card.page)}
+                  className="group cursor-pointer p-6 rounded-2xl glass-card hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(128,0,255,0.2)] transition duration-500 h-full border border-purple-500/10 hover:border-purple-500/40"
+                >
+                  <div className="overflow-hidden rounded-xl mb-6 aspect-video">
+                    <img
+                      src={card.img}
+                      className="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition duration-300">
+                    {card.title}
+                  </h3>
+                  <p className="text-base text-gray-400 mt-2 line-clamp-2">
+                    In-depth AI-powered {card.title.toLowerCase()} for your startup idea.
+                  </p>
+                  <div className="mt-4 flex items-center text-purple-400 font-semibold text-sm group-hover:gap-2 transition-all">
+                    Explore Now <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <IdeaChatbot activeIdea={activeIdea} />
       </div>
 
-      <IdeaChatbot activeIdea={activeIdea} />
 
       {/* 🔮 HIDDEN CONTAINER FOR PDF GRAPH CAPTURE */}
       <div className="fixed -left-[2000px] top-0 w-[800px]">

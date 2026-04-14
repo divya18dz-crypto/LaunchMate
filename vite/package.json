@@ -21,7 +21,8 @@
     "recharts": "^3.8.1",
     "tailwindcss": "^4.2.2",
     "three": "^0.183.2",
-    "tsparticles": "^3.9.1"
+    "tsparticles": "^3.9.1",
+    "tsparticles-slim": "^2.12.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
